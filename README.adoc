@@ -1,0 +1,158 @@
+= Parametrização Inicial do Fedora
+Autor: Seu Nome
+Data: 2025-05-16
+:icons: font
+:source-highlighter: rouge
+
+== Introdução
+
+Este documento fornece uma lista de instruções comentadas para a parametrização inicial do Fedora após a instalação. O objetivo é preparar o sistema para uso geral, com foco em desempenho, segurança e usabilidade.
+
+== 1. Atualizar o sistema
+
+[source,bash]
+----
+sudo dnf update -y
+----
+
+Atualiza a base de dados dos pacotes e instala todas as atualizações disponíveis.
+
+[source,bash]
+----
+sudo dnf upgrade -y
+----
+
+Atualiza os pacotes já instalados para suas versões mais recentes.
+
+== 2. Habilitar repositórios adicionais
+
+[source,bash]
+----
+sudo dnf install https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm
+----
+
+Adiciona o repositório *RPM Fusion Free*, que fornece software livre que não pode ser incluído diretamente no Fedora por questões legais de patentes ou licenciamento.
+
+[source,bash]
+----
+sudo dnf install https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
+----
+
+Adiciona o repositório *RPM Fusion Non-Free*, que fornece software proprietário ou com licenças restritivas.
+
+== 3. Instalar utilitários essenciais
+
+[source,bash]
+----
+sudo dnf install -y \
+  vim \                 # Editor de texto em terminal
+  git \                 # Controle de versão
+  curl \                # Cliente de requisições HTTP
+  wget \                # Ferramenta para downloads
+  htop \                # Monitor de processos interativo
+  gnome-tweaks \        # Ferramenta de ajustes finos do GNOME
+  gnome-extensions-app \# Interface gráfica para gerenciar extensões do GNOME
+  util-linux-user \     # Utilitários do sistema, como `chfn`, `chsh`, `login`, etc.
+  neofetch              # Exibe informações do sistema no terminal
+----
+
+== 4. Instalar codecs multimídia
+
+[source,bash]
+----
+sudo dnf groupupdate multimedia --setop="install_weak_deps=False" --exclude=PackageKit-gstreamer-plugin -y
+----
+
+Instala codecs multimídia (ex: MP3, H.264, etc.) do grupo "multimedia", desativando dependências fracas e evitando conflitos com o `PackageKit`.
+
+[source,bash]
+----
+sudo dnf groupupdate sound-and-video -y
+----
+
+Atualiza e instala pacotes do grupo "som e vídeo", incluindo players, bibliotecas de áudio e vídeo.
+
+== 5. Instalar drivers proprietários (se necessário)
+
+[source,bash]
+----
+sudo dnf install akmod-nvidia
+----
+
+Instala o driver da NVIDIA no formato *akmod* (Auto Kernel Module), que compila o driver automaticamente ao atualizar o kernel.
+
+[source,bash]
+----
+sudo dnf install xorg-x11-drv-nvidia-cuda
+----
+
+Instala o suporte a CUDA, necessário para aceleração gráfica e computacional.
+
+== 6. Instalar Flatpak e configurar Flathub
+
+[source,bash]
+----
+sudo dnf install flatpak -y
+----
+
+Instala o Flatpak, uma tecnologia de distribuição de aplicativos em sandbox.
+
+[source,bash]
+----
+flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+----
+
+Adiciona o repositório *Flathub*, que oferece milhares de aplicativos prontos para uso via Flatpak.
+
+== 7. Configurar firewall (opcional)
+
+[source,bash]
+----
+sudo firewall-cmd --permanent --add-service=ssh
+----
+
+Permite conexões SSH permanentemente através do firewall.
+
+[source,bash]
+----
+sudo firewall-cmd --reload
+----
+
+Recarrega as configurações do firewall para aplicar as alterações.
+
+== 8. Ativar TRIM (para SSDs)
+
+[source,bash]
+----
+sudo systemctl enable fstrim.timer
+----
+
+Ativa o *serviço agendado* que executa `fstrim`, otimizando o uso de SSDs removendo blocos de dados não utilizados.
+
+[source,bash]
+----
+sudo systemctl start fstrim.timer
+----
+
+Inicia o serviço de TRIM imediatamente, sem precisar esperar o próximo agendamento.
+
+== 9. Personalizar a interface (GNOME)
+
+* Utilize o `gnome-tweaks` para alterar temas, fontes e comportamento da interface.
+* O `gnome-extensions-app` permite ativar, desativar e configurar extensões GNOME, como:
+  - Dash to Dock
+  - User Themes
+  - AppIndicator Support
+
+== 10. Reinicie o sistema
+
+[source,bash]
+----
+sudo reboot
+----
+
+Reinicia o sistema para aplicar todas as alterações feitas, especialmente drivers e atualizações críticas.
+
+== Considerações Finais
+
+Após seguir essas etapas, seu Fedora estará pronto para uso com recursos multimídia, desempenho melhorado, visual personalizado e ferramentas essenciais para o dia a dia.

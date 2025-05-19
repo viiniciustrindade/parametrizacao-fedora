@@ -1,4 +1,4 @@
-= Parametrização Essencial do Fedora para Desenvolvimento (Python + Java)
+= Parametrização Essencial do Fedora para Desenvolvimento Java
 Autor: Seu Nome
 Data: 2025-05-16
 :icons: font

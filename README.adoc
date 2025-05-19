@@ -37,25 +37,43 @@ sudo dnf install -y \
   wget              # Downloads simples
 ----
 
-== 4. Instalar ambiente para desenvolvimento em Python
+== 4. Entendendo o DNF
+
+O `dnf` é o gerenciador de pacotes padrão do Fedora. Ele permite instalar, atualizar, buscar e remover pacotes do sistema.
+
+=== Principais comandos do dnf:
 
 [source,bash]
 ----
-sudo dnf install -y python3 python3-pip python3-venv
+sudo dnf update -y           # Atualiza os pacotes
+sudo dnf upgrade -y          # Aplica atualizações de segurança
+dnf search nome-do-pacote    # Procura por um pacote
+dnf info nome-do-pacote      # Mostra detalhes do pacote
+sudo dnf install nome -y     # Instala um pacote
+sudo dnf remove nome -y      # Remove um pacote
 ----
 
-Inclui o interpretador Python, o gerenciador de pacotes `pip` e suporte para ambientes virtuais.
+=== Exemplo: procurar e instalar o OpenJDK 21
 
-== 5. Instalar ambiente para desenvolvimento em Java
-
+1. Procurar pacotes disponíveis:
 [source,bash]
 ----
-sudo dnf install -y java-17-openjdk-devel
+dnf search openjdk
 ----
 
-Instala o JDK 17 (LTS), que inclui o compilador `javac`.
+2. Verificar detalhes do pacote:
+[source,bash]
+----
+dnf info java-21-openjdk-devel
+----
 
-== 6. Instalar Flatpak e configurar Flathub (para instalar IDEs como VS Code, Eclipse, etc.)
+3. Instalar o OpenJDK 21:
+[source,bash]
+----
+sudo dnf install java-21-openjdk-devel -y
+----
+
+== 5. Instalar Flatpak e configurar Flathub (para instalar IDEs como VS Code, Eclipse, etc.)
 
 [source,bash]
 ----
@@ -63,7 +81,7 @@ sudo dnf install flatpak -y
 flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 ----
 
-== 7. Reiniciar o sistema
+== 6. Reiniciar o sistema
 
 [source,bash]
 ----
@@ -72,6 +90,12 @@ sudo reboot
 
 Reinicie para garantir que as configurações sejam aplicadas corretamente.
 
+== Instalação via Flatpak
+
+Instale os aplicativos, google chrome, spotify, intellij comunity e vscode.
+
+Além desses, explore outros aplicativos disponíveis.
+
 == Considerações Finais
 
-Seu sistema Fedora está pronto para desenvolvimento em Python e Java com o mínimo necessário. Você pode instalar ferramentas adicionais como IDEs (Eclipse, VS Code, etc.) usando o Flatpak conforme sua preferência.
+Seu sistema Fedora está pronto para desenvolvimento em Python e Java com o mínimo necessário. Você pode instalar ferramentas adicionais como IDEs (Eclipse e etc.) usando o Flatpak conforme sua preferência.

@@ -99,3 +99,194 @@ Além desses, explore outros aplicativos disponíveis.
 == Considerações Finais
 
 Seu sistema Fedora está pronto para desenvolvimento em Python e Java com o mínimo necessário. Você pode instalar ferramentas adicionais como IDEs (Eclipse e etc.) usando o Flatpak conforme sua preferência.
+
+= Gerenciamento de Usuários, Grupos e Permissões no Fedora Workstation 42
+
+== Objetivo
+Aprender a gerenciar usuários, grupos e permissões no Fedora Workstation 42 por meio do terminal.
+
+== Pré-requisitos
+- Fedora Workstation 42 instalado
+- Acesso a um terminal com privilégios de superusuário (root ou sudo)
+
+== 1. Criando um novo usuário
+
+Para criar um novo usuário no Fedora:
+
+[source,sh]
+----
+sudo adduser nomeusuario
+----
+
+Depois, defina a senha do usuário:
+
+[source,sh]
+----
+sudo passwd nomeusuario
+----
+
+.Exemplo:
+[source,sh]
+----
+sudo adduser joao
+sudo passwd joao
+----
+
+== 2. Criando um novo grupo
+
+Para criar um grupo:
+
+[source,sh]
+----
+sudo groupadd nomegrupo
+----
+
+.Exemplo:
+[source,sh]
+----
+sudo groupadd desenvolvedores
+----
+
+== 3. Adicionando um usuário a um grupo
+
+Para adicionar um usuário existente a um grupo:
+
+[source,sh]
+----
+sudo usermod -aG nomegrupo nomeusuario
+----
+
+.Exemplo:
+[source,sh]
+----
+sudo usermod -aG desenvolvedores joao
+----
+
+.Observação:
+A opção `-aG` adiciona o usuário ao grupo **sem removê-lo de outros grupos**.
+
+== 4. Verificando os grupos de um usuário
+
+[source,sh]
+----
+groups nomeusuario
+----
+
+.Exemplo:
+[source,sh]
+----
+groups joao
+----
+
+== 5. Permissões de arquivos e diretórios
+
+As permissões no Linux são divididas em:
+- **Usuário (user)**
+- **Grupo (group)**
+- **Outros (others)**
+
+Para verificar as permissões de um arquivo ou diretório:
+
+[source,sh]
+----
+ls -ld nomearquivo_oudiretorio
+----
+
+.Exemplo:
+[source,sh]
+----
+ls -l arquivo.txt
+----
+
+Permissões são representadas por 10 caracteres, ex:
+
+----
+-rw-r--r-- 1 joao desenvolvedores 0 mai 26 08:00 arquivo.txt
+----
+
+Significado:
+- `-`: tipo (arquivo comum)
+- `rw-`: permissões do dono (leitura e escrita)
+- `r--`: permissões do grupo (apenas leitura)
+- `r--`: permissões para outros usuários
+
+== 6. Alterando permissões
+
+Usamos o comando `chmod` para alterar permissões:
+
+[source,sh]
+----
+chmod [permissão] nomearquivo
+----
+
+.Exemplos:
+- Dar permissão total ao dono, leitura e execução ao grupo, nenhuma para outros:
++
+[source,sh]
+----
+chmod 750 script.sh
+----
+
+- Dar apenas leitura a todos:
++
+[source,sh]
+----
+chmod 444 documento.txt
+----
+
+Tabela de permissões:
+[cols="1,1,1", options="header"]
+|===
+| Valor | Permissão | Significado
+| 7     | rwx       | leitura, escrita e execução
+| 6     | rw-       | leitura e escrita
+| 5     | r-x       | leitura e execução
+| 4     | r--       | apenas leitura
+| 0     | ---       | nenhuma permissão
+|===
+
+== 7. Alterando dono e grupo de um arquivo
+
+Para alterar o **dono** e/ou o **grupo**:
+
+[source,sh]
+----
+sudo chown novodono:novogrupo arquivo
+----
+
+.Exemplo:
+[source,sh]
+----
+sudo chown joao:desenvolvedores projeto/
+----
+
+== Atividade Final
+
+=== Enunciado
+
+Você é um administrador do sistema Fedora. Sua tarefa é:
+
+1. Criar os usuários: `ana`, `bruno`, `carla`
+2. Criar os grupos: `projetos`, `financeiro`
+3. Adicionar `ana` e `bruno` no grupo `projetos`, e `carla` no grupo `financeiro`
+4. Criar a pasta `/home/empresa`
+5. Dentro da pasta `empresa`, criar dois diretórios:
+   - `projetos_docs` com acesso total apenas ao grupo `projetos`
+   - `financeiro_docs` com acesso total apenas ao grupo `financeiro`
+6. Garantir que nenhum outro usuário (fora dos grupos) consiga acessar essas pastas
+7. Validar:
+   - Usando o comando `ls -l` verificar permissões
+   - Testar acesso com o comando `su - nomeusuario` e listar conteúdo das pastas
+
+=== Entrega
+
+- Captura de tela ou gravação dos comandos utilizados
+- Arquivo `.txt` com os comandos executados passo a passo
+- Indicação clara de que o acesso está controlado por grupo
+
+== Dica
+
+Use os comandos `mkdir`, `chmod`, `chown`, `su`, `ls`, `adduser`, `groupadd`, `usermod` para resolver a atividade.
+
+Boa prática e bom aprendizado!
+
